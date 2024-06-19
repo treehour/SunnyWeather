@@ -1,5 +1,6 @@
 package com.sunnyweather.android.ui.place
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.R
 import com.sunnyweather.android.databinding.ActivityMainBinding
 import com.sunnyweather.android.databinding.FragmentPlaceBinding
@@ -28,12 +30,13 @@ class PlaceFragment : Fragment() {
 
     private lateinit var adapter: PlaceAdapter
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (viewMolder.isPlaceSaved()) {
+        if (activity is MainActivity && viewMolder.isPlaceSaved()) {
             val place = viewMolder.getSavedPlace()
             val intent = Intent(context, WeatherActivity::class.java).apply {
                 putExtra("location_lng",place.location.lng)
@@ -60,11 +63,6 @@ class PlaceFragment : Fragment() {
             }
         }
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onAttach(context: Context) {
